@@ -1,0 +1,39 @@
+/* Botones de ajuste rápido de stock */
+.btn-stock-action {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: white;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-stock-action.minus { color: #e53e3e; }
+.btn-stock-action.plus { color: #38a169; }
+
+.btn-stock-action:hover {
+  background: #f7fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* El botón de borrar que ya tenías, pero con icono */
+.btn-delete-quick {
+  background: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #feb2b2;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.btn-delete-quick:hover {
+  background: #fff5f5;
+  border-color: #e53e3e;
+}
