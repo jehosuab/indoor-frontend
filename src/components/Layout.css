@@ -1,0 +1,12 @@
+/* Color del texto y fondo cuando estamos en esa página */
+.sidebar-nav .nav-link.active {
+  color: #ffffff !important;
+  background-color: #198754 !important; /* El verde de tu marca */
+  font-weight: 500;
+}
+
+/* Efecto hover suave */
+.sidebar-nav .nav-link:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff !important;
+}
