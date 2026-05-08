@@ -10,3 +10,29 @@
   background-color: rgba(255, 255, 255, 0.1);
   color: #fff !important;
 }
+
+/* Offcanvas personalizado */
+.offcanvas.bg-dark {
+  background-color: #212529 !important;
+}
+
+.offcanvas-header {
+  background-color: #212529 !important;
+}
+
+.offcanvas-body {
+  background-color: #212529 !important;
+}
+
+/* Botón hamburguesa responsive */
+@media (max-width: 767px) {
+  .offcanvas {
+    width: 75vw !important;
+    max-width: 300px;
+  }
+
+  .btn-link:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}

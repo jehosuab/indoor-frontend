@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Blueberry Auto",
+    "brand": "BSF",
+    "stock": 50,
+    "unit": "u",
+    "unit_type": "u",
+    "created_at": "2026-05-05T00:00:00.000000Z",
+    "updated_at": "2026-05-05T00:00:00.000000Z"
+  },
+  {
+    "id": 2,
+    "name": "Northern Lights",
+    "brand": "Sensi Seeds",
+    "stock": 25,
+    "unit": "u",
+    "unit_type": "u",
+    "created_at": "2026-05-05T00:00:00.000000Z",
+    "updated_at": "2026-05-05T00:00:00.000000Z"
+  },
+  {
+    "id": 3,
+    "name": "White Widow",
+    "brand": "Green House",
+    "stock": 30,
+    "unit": "u",
+    "unit_type": "u",
+    "created_at": "2026-05-05T00:00:00.000000Z",
+    "updated_at": "2026-05-05T00:00:00.000000Z"
+  },
+  {
+    "id": 4,
+    "name": "Sustrato Orgánico",
+    "brand": "BioBizz",
+    "stock": 100,
+    "unit": "L",
+    "unit_type": "L",
+    "created_at": "2026-05-05T00:00:00.000000Z",
+    "updated_at": "2026-05-05T00:00:00.000000Z"
+  },
+  {
+    "id": 5,
+    "name": "Fertilizante Líquido",
+    "brand": "Advanced Nutrients",
+    "stock": 20,
+    "unit": "L",
+    "unit_type": "L",
+    "created_at": "2026-05-05T00:00:00.000000Z",
+    "updated_at": "2026-05-05T00:00:00.000000Z"
+  }
+]

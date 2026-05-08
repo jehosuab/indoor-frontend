@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/axiosConfig";
 import { Table, Badge, Card, Spinner } from "react-bootstrap";
 import StockForm from "./StockForm";
 import Swal from "sweetalert2";
@@ -15,7 +15,7 @@ const Inventory = () => {
     setLoading(true);
     try {
       // USÁ HTTPS si Herd te está forzando SSL
-      const res = await axios.get("https://indoor-backend.test/api/products");
+      const res = await api.get("/products");
       setProducts(res.data);
     } catch (error) {
       console.error("Error al cargar productos:", error);
@@ -29,23 +29,31 @@ const Inventory = () => {
     fetchProducts();
   }, []);
   const handleStockChange = async (id, isAdding) => {
+    // Buscamos el producto actual para saber su tipo
+    const product = products.find((p) => p.id === id);
     const action = isAdding ? "adicionar" : "restar";
     const color = isAdding ? "#38a169" : "#e53e3e";
 
-    // 1. Abrimos el modal con un input numérico
     const { value: amount } = await Swal.fire({
       title: `${isAdding ? "Sumar" : "Restar"} Stock`,
       input: "number",
-      inputLabel: `Cantidad a ${action}`,
-      inputPlaceholder: "Ej: 50, 100, 500...",
+      inputLabel: `Cantidad a ${action} (${product.unit})`,
+      inputPlaceholder: "Ej: 5, 10, 500...",
+      // AJUSTE: Si el tipo es 'u' (unidades), el step es 1, si no, permite decimales
+      inputAttributes: {
+        step: product.unit_type === "u" ? "1" : "0.01",
+      },
       showCancelButton: true,
       confirmButtonText: "Confirmar",
       confirmButtonColor: color,
       cancelButtonText: "Cancelar",
-      // Validación: que sea un número y que no sea negativo
       inputValidator: (value) => {
         if (!value || value <= 0) {
           return "¡Tenés que ingresar una cantidad válida!";
+        }
+        // VALIDACIÓN EXTRA: Si es unidad, que no sea decimal
+        if (product.unit_type === "u" && !Number.isInteger(Number(value))) {
+          return "Para este producto solo podés ingresar números enteros.";
         }
       },
     });
@@ -53,14 +61,10 @@ const Inventory = () => {
     // 2. Si el usuario confirmó y puso un número
     if (amount) {
       try {
-        // Si estamos restando, convertimos el número a negativo para el backend
         const finalAmount = isAdding ? parseFloat(amount) : -parseFloat(amount);
-
-        const response = await axios.patch(
-          `https://indoor-backend.test/api/products/${id}/stock`,
-          {
-            amount: finalAmount,
-          },
+        const response = await api.patch(
+          `/products/${id}/stock`,
+          { amount: finalAmount },
         );
 
         if (response.status === 200) {
@@ -105,7 +109,7 @@ const Inventory = () => {
     if (result.isConfirmed) {
       try {
         // Usamos la URL completa de tu backend en Herd
-        await axios.delete(`https://indoor-backend.test/api/products/${id}`);
+        await api.delete(`/products/${id}`);
 
         // Si llegamos acá, borró bien en la DB
         fetchProducts(); // Recarga la lista
@@ -176,12 +180,25 @@ const Inventory = () => {
                           {p.brand}
                         </Badge>
                       </td>
-                      <td className="text-success fw-bold">
-                        {p.stock} {p.unit}
+
+                      {/* CELDA MODIFICADA: Lógica para unidades vs líquidos */}
+                      <td
+                        className={
+                          p.unit_type === "u"
+                            ? "text-primary fw-bold"
+                            : "text-success fw-bold"
+                        }
+                      >
+                        {
+                          p.unit_type === "u"
+                            ? Math.floor(p.stock) // Si son semillas, mostramos el entero
+                            : p.stock // Si es fertilizante, mostramos el decimal
+                        }
+                        <small className="text-muted ms-1">{p.unit}</small>
                       </td>
+
                       <td className="text-end">
                         <div className="d-flex justify-content-end gap-2">
-                          {/* Botón Restar */}
                           <button
                             className="btn-stock-action minus"
                             onClick={() => handleStockChange(p.id, false)}
@@ -189,13 +206,13 @@ const Inventory = () => {
                             <i className="bi bi-dash-lg"></i>
                           </button>
 
-                          {/* Botón Sumar */}
                           <button
                             className="btn-stock-action plus"
                             onClick={() => handleStockChange(p.id, true)}
                           >
                             <i className="bi bi-plus-lg"></i>
                           </button>
+
                           <button
                             className="btn-delete-quick"
                             onClick={() => handleDelete(p.id)}

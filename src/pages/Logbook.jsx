@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig';
 import { Card, Badge, Container, Spinner } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import "./Logbook.css"; 
@@ -14,7 +14,7 @@ const Logbook = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('https://indoor-backend.test/api/events');
+      const response = await api.get('/events');
       setEvents(response.data);
       setLoading(false);
     } catch (error) {
@@ -28,7 +28,14 @@ const Logbook = () => {
     switch (type) {
       case 'stock': return { icon: 'bi-box-seam', color: 'text-primary', bg: 'bg-primary' };
       case 'peste': return { icon: 'bi-bug', color: 'text-danger', bg: 'bg-danger' };
+      case 'plaga': return { icon: 'bi-bug', color: 'text-danger', bg: 'bg-danger' };
+      case 'accidente': return { icon: 'bi-exclamation-triangle', color: 'text-danger', bg: 'bg-danger' };
+      case 'perdida': return { icon: 'bi-box-seam', color: 'text-warning', bg: 'bg-warning' };
+      case 'mantenimiento': return { icon: 'bi-gear', color: 'text-info', bg: 'bg-info' };
       case 'riego': return { icon: 'bi-droplet', color: 'text-info', bg: 'bg-info' };
+      case 'preventivo': return { icon: 'bi-shield-check', color: 'text-warning', bg: 'bg-warning' };
+      case 'evento': return { icon: 'bi-calendar-event', color: 'text-secondary', bg: 'bg-secondary' };
+      case 'cosecha': return { icon: 'bi-tree', color: 'text-success', bg: 'bg-success' };
       default: return { icon: 'bi-journal-text', color: 'text-success', bg: 'bg-success' };
     }
   };
